@@ -1,0 +1,141 @@
+Name: Kazi Hasibur Rahman
+Student ID: 24101345
+Lab: 6
+
+//===================================TASK#1===================================
+
+public class Task1 {
+    public static BTNode convertMirror( BTNode root ){
+        if(root==null){
+            return null;
+        }
+        BTNode temp;
+        temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        convertMirror(root.left);
+        convertMirror(root.right);
+        return root;
+    }
+}    
+
+
+//===================================TASK#2===================================
+
+public class Task2 {
+    public static void smallestLevel( BTNode root, Integer[] levelArray, int lvl ){
+        if(root==null){
+            return;
+        }
+        smallestLevel(root.left,levelArray,lvl+1);//9,3
+        if(levelArray[lvl]==null){
+            levelArray[lvl]=(int)root.elem;
+        }else{
+            levelArray[lvl] = Math.min(levelArray[lvl],(int)root.elem);
+        }
+        smallestLevel(root.right,levelArray,lvl+1);
+    }
+}
+
+
+//===================================TASK#3===================================
+
+public class Task3 {
+        private static int getdepth(BTNode root,int lvl){
+            if(root == null){
+                return lvl-1;
+            }
+            int leftlvl = getdepth(root.left,lvl+1);
+            int rightlvl = getdepth(root.right, lvl+1);
+            return Math.max(leftlvl,rightlvl);
+        }
+        private static void sumh(BTNode root, int lvl, int[] arr){
+            if(root==null){
+                return;
+            }
+            sumh(root.left , lvl+1, arr);
+            if(lvl==0){
+                arr[lvl] += (int)root.elem;
+            }else{
+                arr[lvl] += (int)root.elem%lvl;
+            }
+            sumh(root.right, lvl+1, arr);
+        }
+        private static int sumT(int[] arr,int sum,int i){
+            if(i==arr.length){
+                return sum;
+            }
+            sum+=arr[i];
+            i++;
+            return sumT(arr,sum,i);
+        }
+        public static Integer sumTree( BTNode root ){
+            int[] arr = new int[getdepth(root,1)];
+            sumh(root,0,arr);
+            return sumT(arr,0,0);
+        }
+}
+
+
+//===================================TASK#4===================================
+
+public class Task4 {
+    public static void swapChild( BTNode root, int lvl, int M ){
+        if(root==null){
+            return;
+        }
+        lvl++;
+        if(lvl<=M){
+            BTNode temp = root.left;
+            root.left = root.right;
+            root.right = temp;
+        }
+        swapChild(root.left,lvl,M);
+        swapChild(root.right, lvl, M);
+    }
+}
+
+
+//===================================TASK#5===================================
+
+public class Task5 {
+    private static Integer sumLeft(BTNode root){
+        if(root == null){
+            return 0;
+        }
+        return (Integer)root.elem + sumLeft(root.left)+sumLeft(root.right);
+    }
+    private static Integer sumRight(BTNode root){
+        if(root == null){
+            return 0;
+        }
+        return (Integer)root.elem + sumRight(root.right)+sumRight(root.left);
+
+    }
+    public static Integer subtractSummation( BTNode root ){
+        return sumLeft(root.left)-sumRight(root.right);
+    }
+}
+
+
+
+//===================================TASK#6===================================
+
+public class Task6 {
+
+    private static int sumT(BTNode root, int sum, int lvl){
+        if(root == null){
+            return sum;
+        }
+        if(lvl%2==0){
+            return sum-=(int)root.elem-sumT(root.left,sum,lvl+1)-sumT(root.right,sum,lvl+1);
+        }else{
+            return sum+=(int)root.elem+sumT(root.left,sum,lvl+1)+sumT(root.right,sum,lvl+1);
+        }
+    }
+    public static Integer levelSum( BTNode root ){
+        return sumT(root,0,0);
+    }
+}
+
+//===================================THE END===================================

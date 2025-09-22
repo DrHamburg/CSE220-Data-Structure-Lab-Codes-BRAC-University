@@ -1,0 +1,214 @@
+Topic: HashTable
+
+#Task 1:
+
+public class PairNode {
+    String key;
+    Integer value;
+    PairNode next;
+
+    public PairNode( String k, Integer v ){
+        this.key = k;
+        this.value = v;
+        this.next = null;
+    }
+    
+}
+private int hashFunction( String key ){
+        int index=0;
+        String sum="";
+        if(key.length()%2!=0){
+            key+='N';
+        }
+        for(int i = 0; i<key.length();  i+=2){
+            sum=(int)key.charAt(i)+""+(int)key.charAt(i+1);
+            index+=Integer.parseInt(sum);
+        }
+        return index % ht.length;
+    }
+
+    public String searchHashtable( Object[] keyValuePair ){
+        int index = hashFunction((String)keyValuePair[0]);
+        PairNode pNode = ht[index];
+
+        while (pNode != null) {
+            if (pNode.key.equals(keyValuePair[0])) {
+                return "Found";
+            }
+            pNode = pNode.next;
+        }
+        return "Not Found";
+    }
+
+#Task 2:
+
+public class FruitNode {
+    Object[] fruit = new Object[2];
+    FruitNode next;
+    public FruitNode(String name, Integer price){
+        fruit[0] = name;
+        fruit[1] = price;
+        next = null;
+    }
+}
+private int hashFunction( String key ){
+        int sum=0;
+        if(key.length()%2==0){
+            for (int i = 0; i < key.length(); i+=2) {
+                sum+=key.charAt(i);
+            }
+        }else{
+            for (int i = 1; i < key.length(); i+=2) {
+                sum+=key.charAt(i);
+            }
+        }
+        return sum% ht.length;
+    }
+
+    public void insert(String key, Integer value){
+        int hashedIndex = this.hashFunction( key );
+        FruitNode newFNode = new FruitNode( key, value );
+        if ( this.ht[hashedIndex] == null ){
+            this.ht[hashedIndex] = newFNode;
+        } else {
+            FruitNode current = ht[hashedIndex];
+
+            if((int)newFNode.fruit[1] > (int)current.fruit[1] && newFNode.fruit[0].equals(current.fruit[0])) {
+                this.ht[hashedIndex] = newFNode;
+            }else if ((int) newFNode.fruit[1] > (int) current.fruit[1] && !newFNode.fruit[0].equals(current.fruit[0])) {
+                newFNode.next = this.ht[hashedIndex];
+                this.ht[hashedIndex] = newFNode;
+            }else{
+                while ( current.next!=null && (int)current.next.fruit[1] >(int) newFNode.fruit[1]  ) {
+                        current = current.next;
+                }
+                newFNode.next = current.next;
+                current.next = newFNode;
+            }
+        }
+    }
+
+#Task 3:
+
+public class PairNode {
+    
+    Integer key;
+    String value;
+    PairNode next;
+    public PairNode( Integer k, String v ){
+        key = k;
+        value = v;
+        next = null;
+    } 
+}
+private int hashFunction( Integer key ){
+        return (key+3)%ht.length;
+    }
+
+    public void remove( Integer key ) {
+        int index = hashFunction(key);
+        PairNode current = ht[index];
+        if (ht[index].key.equals(key) && current.next == null) {
+            ht[index] = null;
+        } else if(ht[index].key.equals(key)) {
+            ht[index]=current.next;
+        }else {
+            while (current != null) {
+                if (current.next != null && current.next.key.equals(key)) {
+                    current.next = current.next.next;
+                    break;
+                }
+                current = current.next;
+            }
+        }
+    }
+
+
+Topic: Stack:
+
+#Task 4
+
+    public static int diamondCount(Stack stack, String str) {
+        // As the stack is storing int type data in the stack and you are checking a String. Consider '>' = 1, '<' = 2 and '.' = 3 for mapping String with integer.
+        int count = 0;
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if(ch=='<'){
+                stack.push(1);
+            }else if(ch == '>'){
+                if(!stack.isEmpty()){
+                    int top = stack.pop();
+                    if(top ==1){
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+#Task 5
+
+    public static void removeBlock(Stack stack, int n) {
+        Stack stk = new Stack();
+        int count =1;
+        while(!stack.isEmpty()){
+            if(count==n){
+                stack.pop();
+            }else{
+                stk.push(stack.pop());
+            }
+            count++;
+        }
+        while(!stk.isEmpty()){
+            stack.push(stk.pop());
+        }
+    }
+
+#Task 6
+
+    public static Stack conditionalReverse(Stack stack) {
+        Stack stk = new Stack();
+        while(!stack.isEmpty()){
+            Integer elem = stack.pop();
+            while(elem.equals(stack.peek())){
+                elem = stack.pop();
+            }
+            stk.push(elem);
+
+        }
+        return stk;
+    }
+
+Topic: Queue
+
+#Task 7:
+
+public void enqueueCall(int customerId, boolean isVip) {
+        if(isVip){
+            vipQueue.enqueue(customerId);
+            System.out.printf("Customer %d added to VIP queue.\n",customerId);
+        }else{
+            regularQueue.enqueue(customerId);
+            System.out.printf("Customer %d added to Regular queue.\n",customerId);
+        }
+    }
+
+    public void dequeueCall() {
+        if(!vipQueue.isEmpty()){
+           System.out.printf("Processing VIP Customer %d.\n",vipQueue.peek());
+           vipQueue.dequeue();
+        }else if(!regularQueue.isEmpty()){
+            System.out.printf("Processing Regular Customer %d.\n",regularQueue.peek());
+            regularQueue.dequeue();
+        }else{
+            System.out.print("No calls in the queue.\n");
+        }
+    }
+
+    public void displayQueue() {
+        System.out.print("VIP Queue:\n");
+        vipQueue.displayQueue();
+        System.out.print("Regular Queue:\n");
+        regularQueue.displayQueue();
+    }
