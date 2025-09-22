@@ -1,0 +1,661 @@
+//===================== Edge Class =====================
+
+public class edge {
+    int source;
+    int destination;
+    edge next;
+    edge(int source, int destination){
+        this.source = source;
+        this.destination = destination;
+        this.next = null;
+    }
+
+}
+
+//===================== Weight Edge Class =====================
+
+public class edgew {
+    int source;
+    int destination;
+    int weight;
+    edgew next;
+    edgew(int source, int destination, int weight){
+        this.source = source;
+        this.destination = destination;
+        this.weight = weight;
+        this.next = null;
+    }
+}
+
+//===================== Task 1 =====================
+
+public class task1 {
+    private int vertices;
+    private int[][] adj_mat;
+    task1(int vertices){
+        this.vertices = vertices+1;
+        adj_mat  = new int[this.vertices][this.vertices];
+    }
+    public void addedges(int[][] edges){
+        for(int i=0; i<edges.length;i++){
+            int[] edge = edges[i];
+            int u = edge[0];
+            int v = edge[1];
+            adj_mat[u][v]=1;
+            adj_mat[v][u]=1;
+        }
+    }
+    public int countMaxDegree(){
+        int sum=0;
+        int maxDegreeVertex=0;
+        for(int i=0; i< adj_mat.length;i++){
+            int tempSum = 0;
+            for (int j = 0; j < adj_mat.length; j++) {
+                if(adj_mat[i][j]==1){
+                    tempSum++;
+                }
+            }
+            if(tempSum>sum){
+                sum = tempSum;
+                maxDegreeVertex = i;
+            }
+        }
+        System.out.printf("Max degree vertex: %d\n",maxDegreeVertex);
+        return sum;
+    }
+}
+
+//===================== Task 2 =====================
+
+public class task2 {
+    private int vertices;
+    private int[][] adj_mat;
+    task2(int vertices){
+        this.vertices = vertices+1;
+        adj_mat = new int[this.vertices][this.vertices];
+    }
+    public void addedges(int[][] edges){
+        for(int i=1; i<edges.length; i++){
+            int[] edge = edges[i];
+            int u = edge[0];
+            int v = edge[1];
+            int w = edge[2];
+            adj_mat[u][v] = w;
+            adj_mat[v][u] = w;
+        }
+    }
+    public int maxWeightEdge(){
+        int sum=0;
+        int vertex=0;
+        for(int i=0; i<adj_mat.length;i++){
+            int tempsum=0;
+            for (int j = 0; j < adj_mat.length; j++) {
+                tempsum+=adj_mat[i][j];
+            }
+            if(tempsum>sum){
+                sum = tempsum;
+                vertex = i;
+            }
+        }
+        return vertex;
+    }
+}
+
+//===================== Task 3 =====================
+
+public class task3 {
+    int vertices;
+    int[][] adj_mat;
+    task3(int vertices){
+        this.vertices = vertices+1;
+        adj_mat = new int[this.vertices][this.vertices];
+    }
+    public void addedges(int[][] edges){
+        for(int i=1; i< edges.length;i++){
+            int[] edge = edges[i];
+            int u= edge[0];
+            int v= edge[1];
+            int w= edge[2];
+            adj_mat[u][v] = w;
+        }
+    }
+    public int maxDegree(){
+        int sum=0;
+        int vertex=1;
+        for(int i=1; i< adj_mat.length;i++){
+            int tempsum=0;
+            for (int j = 1; j < adj_mat.length; j++) {
+                if(adj_mat[i][j]>0){
+                    tempsum++;
+                }
+            }
+            if(sum<tempsum){
+                sum=tempsum;
+                vertex = i;
+            }
+        }
+        System.out.printf("vertex: %d\n",vertex);
+        return sum;
+    }
+    public int maxWeightEdge(){
+        int sum=0;
+        int vertex=0;
+        for(int i=0; i<adj_mat.length;i++){
+            int tempsum=0;
+            for (int j = 0; j < adj_mat.length; j++) {
+                tempsum+=adj_mat[i][j];
+            }
+            if(tempsum>sum){
+                sum = tempsum;
+                vertex = i;
+            }
+        }
+        return vertex;
+    }
+}
+
+//===================== Task 4 =====================
+
+public class task4 {
+    int vertices;
+    int[][] adj_mat;
+    public task4(int vertices){
+        this.vertices= vertices+1;
+        adj_mat = new int[this.vertices][this.vertices];
+    }
+    public void addedges(int[][] edges){
+        for (int i = 0; i < edges.length; i++) {
+            int[] edge= edges[i];
+                int u = edge[0];
+                int v = edge[1];
+                int w = edge[2];
+                adj_mat[u][v] = w;
+        }
+    }
+
+    public void undirected(){
+        for (int i = 1; i < adj_mat.length; i++) {
+            for (int j = 1; j < adj_mat.length; j++) {
+                adj_mat[j][i] = adj_mat[i][j];
+            }
+        }
+    }
+    public void printadj_mat(){
+        for (int i = 1; i < adj_mat.length; i++) {
+            for (int j = 1; j < adj_mat.length; j++) {
+                System.out.printf("%d %d-> %d\n",i,j,adj_mat[i][j]);
+            }
+        }
+    }
+}
+
+//===================== Task 5 =====================
+
+public class task5 {
+    private int vertices;
+    private edge[] adj_list;
+    task5(int vertices){
+        this.vertices = vertices+1;
+        this.adj_list = new edge[this.vertices];
+    }
+    public void addedges(int[][] edges){
+        for(int i=0; i< edges.length;i++){
+            int[] edge = edges[i];
+            int u= edge[0];
+            int v= edge[1];
+            edge newEdge = new edge(u,v);
+            if(adj_list[u] == null){
+                adj_list[u]=newEdge;
+            }else{
+                edge head = adj_list[u];
+                newEdge.next = head;
+                adj_list[u] = newEdge;
+            }
+            edge newEdge2 = new edge(v,u);
+            if(adj_list[v] == null){
+                adj_list[v]=newEdge2;
+            }else{
+                edge head = adj_list[v];
+                newEdge2.next = head;
+                adj_list[v] = newEdge2;
+            }
+        }
+    }
+    public void printList() {
+        System.out.println("Adjacency List:");
+        for (int i = 1; i < vertices; i++) {
+            System.out.print(i + ": ");
+            edge current = adj_list[i];
+            while (current != null) {
+                System.out.print(current.destination + " ");
+                current = current.next;
+            }
+            System.out.println();
+        }
+    }
+    public int maxDegree(){
+        int sum =0,vertex=1;
+        for(int i=1;i<adj_list.length;i++){
+            edge current = adj_list[i];
+            int tempsum=0;
+            while(current!=null){
+                tempsum++;
+                current = current.next;
+            }
+            if(sum<tempsum){
+                sum=tempsum;
+                vertex=i;
+            }
+        }
+        System.out.printf("Max Degree Vertex: %d\n",vertex);
+        return sum;
+    }
+}
+
+//===================== Task 6 =====================
+
+public class task6 {
+    private int vertices;
+    private edgew[] adj_list;
+    task6(int vertices){
+        this.vertices = vertices+1;
+        adj_list = new edgew[this.vertices];
+    }
+    public void addedges(int[][] edges){
+        for (int i = 0; i < edges.length; i++) {
+            int[] edge = edges[i];
+            int u= edge[0];
+            int v= edge[1];
+            int w= edge[2];
+            edgew newEdge = new edgew(u,v,w);
+            if(adj_list[u] == null){
+                adj_list[u]=newEdge;
+            }else{
+                edgew head = adj_list[u];
+                newEdge.next = head;
+                adj_list[u] = newEdge;
+            }
+            edgew newEdge2 = new edgew(v,u,w);
+            if(adj_list[v] == null){
+                adj_list[v]=newEdge2;
+            }else{
+                edgew head = adj_list[v];
+                newEdge2.next = head;
+                adj_list[v] = newEdge2;
+            }
+        }
+    }
+    public void printList() {
+        System.out.println("Adjacency List:");
+        for (int i = 1; i < vertices; i++) {
+            System.out.print(i + ": ");
+            edgew current = adj_list[i];
+            while (current != null) {
+                System.out.print("("+current.destination +","+ current.weight+")" +" ");
+                current = current.next;
+            }
+            System.out.println();
+        }
+    }
+    public void maxweightVertex(){
+        int sum =0,vertex=1;
+        for(int i=1;i<adj_list.length;i++){
+            edgew current = adj_list[i];
+            int tempsum=0;
+            while(current!=null){
+                tempsum+=current.weight;
+                current = current.next;
+            }
+            if(sum<tempsum){
+                sum=tempsum;
+                vertex=i;
+            }
+        }
+        System.out.printf("Max Weight Vertex: %d\n",vertex);
+
+    }
+}
+
+//===================== Task 7 =====================
+
+public class task7 {
+    private int vertices;
+    private edgew[] adj_list;
+    task7(int vertices){
+        this.vertices = vertices+1;
+        adj_list = new edgew[this.vertices];
+    }
+    public void addedges(int[][] edges){
+        for(int i=0; i< edges.length;i++){
+            int[] edge = edges[i];
+            int u= edge[0];
+            int v= edge[1];
+            int w= edge[2];
+            edgew newEdge = new edgew(u,v,w);
+            if(adj_list[u] == null){
+                adj_list[u]=newEdge;
+            }else{
+                edgew head = adj_list[u];
+                newEdge.next = head;
+                adj_list[u] = newEdge;
+            }
+        }
+    }
+    public void printList() {
+        System.out.println("Adjacency List:");
+        for (int i = 1; i < vertices; i++) {
+            System.out.print(i + ": ");
+            edgew current = adj_list[i];
+            while (current != null) {
+                System.out.print(current.destination + " ");
+                current = current.next;
+            }
+            System.out.println();
+        }
+    }
+    public int maxDegree(){
+        int sum =0,vertex=1;
+        for(int i=1;i<adj_list.length;i++){
+            edgew current = adj_list[i];
+            int tempsum=0;
+            while(current!=null){
+                tempsum++;
+                current = current.next;
+            }
+            if(sum<tempsum){
+                sum=tempsum;
+                vertex=i;
+            }
+        }
+        System.out.printf("Max Degree Vertex: %d\n",vertex);
+        return sum;
+    }
+    public void maxweightVertex(){
+        int sum =0,vertex=1;
+        for(int i=1;i<adj_list.length;i++){
+            edgew current = adj_list[i];
+            int tempsum=0;
+            while(current!=null){
+                tempsum+=current.weight;
+                current = current.next;
+            }
+            if(sum<tempsum){
+                sum=tempsum;
+                vertex=i;
+            }
+        }
+        System.out.printf("Max Weight Vertex: %d\n",vertex);
+
+    }
+}
+
+//===================== Task 8 =====================
+
+public class task8 {
+    private int vertices;
+    private edgew[] adj_list;
+    task8(int vertices){
+        this.vertices = vertices+1;
+        adj_list = new edgew[this.vertices];
+    }
+    public void addedges(int[][] edges){
+        for(int i=0; i< edges.length;i++){
+            int[] edge = edges[i];
+            int u= edge[0];
+            int v= edge[1];
+            int w= edge[2];
+            edgew newEdge = new edgew(u,v,w);
+            if(adj_list[u] == null){
+                adj_list[u]=newEdge;
+            }else{
+                edgew head = adj_list[u];
+                newEdge.next = head;
+                adj_list[u] = newEdge;
+            }
+        }
+    }
+    public void printListDir() {
+        System.out.println("Adjacency List:");
+        for (int i = 1; i < vertices; i++) {
+            System.out.print(i + ": ");
+            edgew current = adj_list[i];
+            while (current != null) {
+                System.out.print("("+current.destination +","+ current.weight+")" +" ");
+                current = current.next;
+            }
+            System.out.println();
+        }
+    }
+
+    public void dirToUndir(){
+        edgew[] undir = new edgew[vertices];
+        for(int i=1; i< adj_list.length;i++){
+            edgew current =adj_list[i];
+            while(current!=null){
+                edgew newEdge1 = new edgew(current.source, current.destination, current.weight);
+                if(undir[i] == null){
+                    undir[i] = newEdge1;
+                }else{
+                    newEdge1.next = undir[i];
+                    undir[i] = newEdge1;
+                }
+                int n = current.destination;
+                edgew newEdge2 = new edgew(current.destination, current.source, current.weight);
+                if(undir[n] == null){
+                    undir[n] = newEdge2;
+                }else{
+                    newEdge2.next = undir[n];
+                    undir[n] = newEdge2;
+                }
+                current = current.next;
+            }
+
+        }
+	System.out.println("Undirected ADJ List");
+        for (int i = 1; i < vertices; i++) {
+            System.out.print(i + ": ");
+            edgew current = undir[i];
+            while (current != null) {
+                System.out.print("("+current.destination +","+ current.weight+")" +" ");
+                current = current.next;
+            }
+            System.out.println();
+        }
+    }
+}
+
+
+import java.util.Scanner;
+
+public class Tester{
+    public static void main(String[] args){
+        System.out.println("Enter any number between 1 and 8.\nTo run all tasks just press enter");
+        System.out.print("Which Task do you wanna check: ");
+        Scanner sc = new Scanner(System.in);
+        String input = sc.nextLine();
+        sc.close();
+
+
+        if( input.equals("1") || input.equals("") ) task1();
+        if( input.equals("2") || input.equals("") ) task2();
+        if( input.equals("3") || input.equals("") ) task3();
+        if( input.equals("4") || input.equals("") ) task4();
+        if( input.equals("5") || input.equals("") ) task5();
+        if( input.equals("6") || input.equals("") ) task6();
+        if( input.equals("7") || input.equals("") ) task7();
+        if( input.equals("8") || input.equals("") ) task8();
+        taskPrint("\n===================== TheEnd =====================");
+    }
+
+    public static void task1() {
+        taskPrint("\n===================== TASK#1 =====================\n");
+        int vertices = 7;
+        int[][] edges = {
+                {1, 2}, {1, 3}, {1, 4}, {1, 7},
+                {2, 3}, {2, 4}, {2, 6}, {2, 7},
+                {3, 5}, {3, 6}, {3, 7},
+                {4, 6}, {4, 7},
+                {5, 6}, {5, 7},
+                {6, 7}
+        };
+        task1 ungraph1 = new task1(vertices);
+        ungraph1.addedges(edges);
+        int degree = ungraph1.countMaxDegree();
+        System.out.printf("Degree: %d", degree);
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+    }
+
+    public static void task2() {
+        taskPrint("\n===================== TASK#2 =====================\n");
+        int vertices = 7;
+        int[][] edges = {
+                {1, 2, 1}, {1, 3, 2}, {1, 4, 3}, {1, 7, 4},
+                {2, 3, 5}, {2, 4, 6}, {2, 6, 7}, {2, 7, 8},
+                {3, 5, 9}, {3, 6, 10}, {3, 7, 11},
+                {4, 6, 12}, {4, 7, 13},
+                {5, 6, 14}, {5, 7, 15},
+                {6, 7, 16}
+        };
+        task2 ungraph2 = new task2(vertices);
+        ungraph2.addedges(edges);
+        int vertex = ungraph2.maxWeightEdge();
+        System.out.printf("Max Weight Vertex: %d", vertex);
+
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+    }
+
+    public static void task3(){
+        taskPrint("\n===================== TASK#3 =====================");
+        int vertices = 7;
+        int[][] edges = {
+                {1, 2, 1}, {1, 3, 2}, {1, 4, 3}, {1, 7, 4},
+                {2, 3, 5}, {2, 4, 6}, {2, 6, 7}, {2, 7, 8},
+                {3, 5, 9}, {3, 6, 10}, {3, 7, 11},
+                {4, 6, 12}, {4, 7, 13},
+                {5, 6, 14}, {5, 7, 15},
+                {6, 7, 16}
+        };
+        task3 ungraph3 = new task3(vertices);
+        ungraph3.addedges(edges);
+        int degree = ungraph3.maxDegree();
+        System.out.printf("degree: %d\n", degree);
+        int maxWvertex = ungraph3.maxWeightEdge();
+        System.out.printf("Max Weight Vertex: %d", maxWvertex);
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+    }
+
+    public static void task4(){
+        taskPrint("\n===================== TASK#4 =====================\n");
+        int vertices = 7;
+        int[][] edges = {
+                {1, 2, 1}, {1, 3, 2}, {1, 4, 3}, {1, 7, 4},
+                {2, 3, 5}, {2, 4, 6}, {2, 6, 7}, {2, 7, 8},
+                {3, 5, 9}, {3, 6, 10}, {3, 7, 11},
+                {4, 6, 12}, {4, 7, 13},
+                {5, 6, 14}, {5, 7, 15},
+                {6, 7, 16}
+        };
+        task4 ungraph4 = new task4(vertices);
+        ungraph4.addedges(edges);
+        ungraph4.undirected();
+        ungraph4.printadj_mat();
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+    }
+
+    public static void task5() {
+        taskPrint("\n===================== TASK#5 =====================\n");
+        int vertices = 7;
+        int[][] edges = {
+                {1, 2}, {1, 3}, {1, 4}, {1, 7},
+                {2, 3}, {2, 4}, {2, 6}, {2, 7},
+                {3, 5}, {3, 6}, {3, 7},
+                {4, 6}, {4, 7},
+                {5, 6}, {5, 7},
+                {6, 7}
+        };
+        task5 ungraph5 = new task5(vertices);
+        ungraph5.addedges(edges);
+        ungraph5.printList();
+        int degree = ungraph5.maxDegree();
+        System.out.printf("Degree: %d\n",degree);
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+    }
+    public static void task6() {
+        taskPrint("\n===================== TASK#6 =====================\n");
+        int vertices = 7;
+        int[][] edges = {
+                {1, 2, 1}, {1, 3, 2}, {1, 4, 3}, {1, 7, 4},
+                {2, 3, 5}, {2, 4, 6}, {2, 6, 7}, {2, 7, 8},
+                {3, 5, 9}, {3, 6, 10}, {3, 7, 11},
+                {4, 6, 12}, {4, 7, 13},
+                {5, 6, 14}, {5, 7, 15},
+                {6, 7, 16}
+        };
+        task6 ungraph6 = new task6(vertices);
+        ungraph6.addedges(edges);
+        ungraph6.printList();
+        ungraph6.maxweightVertex();
+
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+    }
+    public static void task7() {
+        taskPrint("\n===================== TASK#7 =====================\n");
+        int vertices = 7;
+        int[][] edges = {
+                {1, 2, 1}, {1, 3, 2}, {1, 4, 3}, {1, 7, 4},
+                {2, 3, 5}, {2, 4, 6}, {2, 6, 7}, {2, 7, 8},
+                {3, 5, 9}, {3, 6, 10}, {3, 7, 11},
+                {4, 6, 12}, {4, 7, 13},
+                {5, 6, 14}, {5, 7, 15},
+                {6, 7, 16}
+        };
+        task7 ungraph7 = new task7(vertices);
+        ungraph7.addedges(edges);
+        ungraph7.printList();
+        int degree = ungraph7.maxDegree();
+        System.out.printf("Degree: %d\n",degree);
+        ungraph7.maxweightVertex();
+
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+    }
+
+    public static void task8() {
+        taskPrint("\n===================== TASK#8 =====================\n");
+        int vertices = 7;
+        int[][] edges = {
+                {1, 2, 1}, {1, 3, 2}, {1, 4, 3}, {1, 7, 4},
+                {2, 3, 5}, {2, 4, 6}, {2, 6, 7}, {2, 7, 8},
+                {3, 5, 9}, {3, 6, 10}, {3, 7, 11},
+                {4, 6, 12}, {4, 7, 13},
+                {5, 6, 14}, {5, 7, 15},
+                {6, 7, 16}
+        };
+        task8 ungraph8 = new task8(vertices);
+        ungraph8.addedges(edges);
+        ungraph8.printListDir();
+	
+        ungraph8.dirToUndir();
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+    }
+    static final String green = "\u001B[32m", red = "\u001B[31m", white = "\u001B[37m", cyan = "\033[0;96m";
+    static final String bold="\u001B[1m", underline = "\u001B[4m", normal = "\033[0;0m";
+
+    static String taskFormat = cyan;
+    static String endFormat = green;
+
+    private static void taskPrint(String task){
+        System.out.println(taskFormat+task+endFormat);
+    }
+}
+
+
+//========================================================END Code==========================================================
+

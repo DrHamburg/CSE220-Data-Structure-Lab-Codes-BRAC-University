@@ -1,0 +1,333 @@
+//================LAB Assignment 8==================
+
+Name: Kazi Hasibur Rahman
+ID: 24101345
+Sec: 32
+Course Code: CSE220
+
+
+
+//======================TASK#1======================
+
+public class MinHeap{
+    private static int size;
+    private static Integer[] arr;
+    private static int capacity;
+    MinHeap(int capacity){
+        this.size = 0;
+        this.capacity = capacity;
+        this.arr = new Integer[capacity];
+    }
+
+    public static void insert(Integer elem){
+        if(size<capacity){
+            arr[size] = elem;
+            swim(size);
+            size++;
+        }else{
+            System.out.print("Heap Array is Full\n");
+        }
+    }
+
+    public static void swim(int idx){
+        int parent = (idx-1)/2;
+        if(idx>0 && arr[idx]<arr[parent]){
+            Integer temp = arr[parent];
+            arr[parent] = arr[idx];
+            arr[idx] = temp;
+            swim(parent);
+        }
+    }
+
+    public static Integer extractMin(){
+        if(size == 0){
+            System.out.print("Heap Array is Empty\n");
+            return 0;
+        }else{
+            Integer min = arr[0];
+            arr[0] = arr[size-1];
+            size--;
+            sink(0);
+            return min;
+        }
+    }
+
+    public static void sink(int idx){
+        int minimum = idx;
+        int left = 2*idx+1;
+        int right = 2*idx+2;
+        if(left<size && arr[left]< arr[minimum]){
+            minimum = left;
+        }
+        if(right<size && arr[right]< arr[minimum]){
+            minimum = right;
+        }
+        if(minimum != idx){
+            Integer temp = arr[minimum];
+            arr[minimum] = arr[idx];
+            arr[idx] = temp;
+            sink(minimum);
+        }
+    }
+
+    public static void sort(){
+        int tempSize = size;
+        for (int i = size-1;i>=0;i--) {
+            Integer temp = arr[i];
+            arr[i] = arr[0];
+            arr[0] = temp;
+            size--;
+            sink(0);
+        }
+        size = tempSize;
+    }
+}
+
+//==================================================
+
+
+//======================TASK#2======================
+
+public class MaxHeap{
+    private static int size;
+    private static Integer[] arr;
+    private static int capacity;
+    MaxHeap(int capacity){
+        this.size = 0;
+        this.capacity = capacity;
+        this.arr = new Integer[capacity];
+    }
+
+    public static void insert(Integer elem){
+        if(size<capacity){
+            arr[size] = elem;
+            swim(size);
+            size++;
+        }else{
+            System.out.print("Heap Array is Full\n");
+        }
+    }
+ 
+    public static void swim(int idx){
+        int parent = (idx-1)/2;
+        if(idx>0 && arr[idx]>arr[parent]){
+            Integer temp = arr[parent];
+            arr[parent] = arr[idx];
+            arr[idx] = temp;
+            swim(parent);
+        }
+    }
+
+    public static Integer extractMax(){
+        if(size == 0){
+            System.out.print("Heap Array is Empty\n");
+            return 0;
+        }else{
+            Integer max = arr[0];
+            arr[0] = arr[size-1];
+            size--;
+            sink(0);
+            return max;
+        }
+    }
+
+    public static void sink(int idx){
+        int maximum = idx;
+        int left = 2*idx+1;
+        int right = 2*idx+2;
+        if(left<size && arr[left]> arr[maximum]){
+            maximum = left;
+        }
+        if(right<size && arr[right]> arr[maximum]){
+            maximum = right;
+        }
+        if(maximum != idx){
+            Integer temp = arr[maximum];
+            arr[maximum] = arr[idx];
+            arr[idx] = temp;
+            sink(maximum);
+        }
+    }
+
+    public static void sort(){
+        int tempsize = size;
+        for (int i = size-1;i>=0;i--) {
+            Integer temp = arr[i];
+            arr[i] = arr[0];
+            arr[0] = temp;
+            size--;
+            sink(0);
+        }
+        size= tempsize;
+    }
+}
+
+//==================================================
+
+
+//======================TASK#3======================
+
+public class Task3{
+    public static Integer[] processingTime(Integer[] tasks, int m){
+        Integer[] newTasks = new Integer[m];
+        setZero(newTasks);
+        machineLoads(tasks,newTasks,0);
+        return newTasks;
+    }
+    private static void setZero(Integer[] newTasks){
+        for (int i = 0; i < newTasks.length; i++) {
+            newTasks[i] = 0;
+        }
+    }
+    private static void machineLoads(Integer[] tasks, Integer[] newTasks,int m){
+        if(m == tasks.length){
+            return;
+        }else{
+            int min = minValue(newTasks);
+            newTasks[min]+=tasks[m];
+            machineLoads(tasks,newTasks,m+1);
+        }
+    }
+    private static int minValue(Integer[] newTasks){
+        int min = 0;
+        for (int i = 1; i < newTasks.length; i++) {
+            if(newTasks[i]< newTasks[min]){
+                min = i;
+            }
+        }
+        return min;
+    }
+}
+
+//==================================================
+
+
+//======================TASK#4======================
+
+public class Task4{
+    public static Integer[] largestValue(Integer[] nums, int k){
+        Integer[] result = new Integer[k];
+        MaxHeap maxheap = new MaxHeap(nums.length);
+        for(int i = 0; i < nums.length; i++) {
+            maxheap.insert(nums[i]);
+        }
+        for (int i = 0; i < k; i++) {
+            result[i] = maxheap.extractMax();
+        }
+        return result;
+    }
+}
+
+//==================================================
+
+
+//========================================================Driver Code==========================================================
+
+import java.util.Scanner;
+
+public class Tester{
+    public static void main(String[] args){
+        System.out.println("Enter any number between 1 and 4.\nTo run all tasks just press enter");
+        System.out.print("Which Task do you wanna check: ");
+        Scanner sc = new Scanner(System.in);
+        String input = sc.nextLine();
+        sc.close();
+
+
+        if( input.equals("1") || input.equals("") ) task1();
+        if( input.equals("2") || input.equals("") ) task2();
+        if( input.equals("3") || input.equals("") ) task3();
+        if( input.equals("4") || input.equals("") ) task4();
+        taskPrint("\n===================== TheEnd =====================");
+    }
+
+    public static void task1() {
+        taskPrint("\n===================== TASK#1 =====================\n");
+        Integer[] heap = {2, 4, 7, 1, 6};
+        Integer[] minheapTester = new Integer[heap.length];
+
+        MinHeap minheap = new MinHeap(heap.length);
+        for(int i = 0; i < heap.length; i++) {
+            minheap.insert(heap[i]);
+        }
+        System.out.println("Original Array: 2 4 7 1 6");
+
+        if(heap.length==0){
+            minheap.extractMin();
+        }else{
+            System.out.print("Heap Array: ");
+        }
+        for(int i = 0; i < minheapTester.length; i++) {
+            minheapTester[i] = minheap.extractMin();
+            System.out.print(minheapTester[i]+" ");
+        }
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+    }
+
+    public static void task2() {
+        taskPrint("\n===================== TASK#2 =====================\n");
+        Integer[] heap = {};
+        Integer[] maxheapTester = new Integer[heap.length];
+
+        MaxHeap maxheap = new MaxHeap(heap.length);
+        for(int i = 0; i < heap.length; i++) {
+            maxheap.insert(heap[i]);
+        }
+        System.out.println("Original Array: 2 4 7 1 6");
+        if(heap.length==0){
+            maxheap.extractMax();
+        }else{
+            System.out.print("Heap Array: ");
+        }
+        for(int i = 0; i < maxheapTester.length; i++) {
+            maxheapTester[i] = maxheap.extractMax();
+            System.out.print(maxheapTester[i]+" ");
+        }
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+    }
+
+    public static void task3(){
+        taskPrint("\n===================== TASK#3 =====================");
+        Integer [] tasks = {2,4,7,1,6};
+        int m = 4;
+        Integer [] newTasks = Task3.processingTime(tasks,m);
+        System.out.print("Expected Output: 2 4 7 7\n");
+        System.out.print("Your Output    :");
+        for (int i = 0; i < m; i++) {
+            System.out.print(" "+newTasks[i]);
+        }
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+    }
+
+    public static void task4(){
+        taskPrint("\n===================== TASK#4 =====================\n");
+        Integer [] nums = {4, 10, 2, 8, 6, 7};
+        int k = 3;
+        Integer [] largestValue = Task4.largestValue(nums,k);
+        System.out.print("Expected Output: 10 8 7\n");
+        System.out.print("Your Output    :");
+        for (int i = 0; i < k; i++) {
+            System.out.print(" "+largestValue[i]);
+        }
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+    }
+
+
+    static final String green = "\u001B[32m", red = "\u001B[31m", white = "\u001B[37m", cyan = "\033[0;96m";
+    static final String bold="\u001B[1m", underline = "\u001B[4m", normal = "\033[0;0m";
+
+    static String taskFormat = cyan;
+    static String endFormat = green;
+
+    private static void taskPrint(String task){
+        System.out.println(taskFormat+task+endFormat);
+    }
+}
+
+
+//========================================================END Code==========================================================
+
