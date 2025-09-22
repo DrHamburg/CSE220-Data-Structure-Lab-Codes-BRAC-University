@@ -1,0 +1,244 @@
+Singly Linked List:
+Task-1:
+public static Node alternateMerge( Node head1, Node head2 ){
+        Node current1 = head1;
+        Node current2 = head2;
+        while(current1!=null && current2!= null){
+            Node temp1 = current1.next;
+            Node temp2 = current2.next;
+            current1.next = current2;
+            current2.next = temp1;
+            current1 = temp1;
+            current2 = temp2;
+        }
+        return head1;
+    }
+
+Task-2:
+public static Node wordDecoder( Node head ){
+        Node current = head;
+        int count = 0;
+        while (current != null) {
+            count++;
+            current = current.next;
+        }
+        current = head;
+        int elem = 0;
+        while (current != null) {
+            if(elem == 13%count){
+                head = current;
+                break;
+            }
+            elem++;
+            current = current.next;
+        }
+        int multi = 13%count;
+        Node temp= head;
+        Node newNode = head;
+        int c = 3;
+        for (int i = multi+1; i <= count ; i++) {
+            if( i% multi==0){
+                while(c!=i){
+                    temp = temp.next;
+                    c++;
+                }
+                newNode.next = temp;
+                newNode = temp;
+            }
+        }
+        Node dHead = new Node(null, null);
+        newNode.next = dHead;
+        Node prev = null;
+        Node next = null;
+        current = head;
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        dHead = prev;
+        return dHead;
+    }
+
+Task-3:
+public static Node idGenerator(Node head1, Node head2, Node head3) {
+        Node prev = null;
+        Node next = null;
+        Node tail1 = head1;
+        Node current = head1;
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        head1 = prev;
+
+        current = head2;
+        while(current!=null){
+            current.elem = (int)current.elem+ (int)head3.elem;
+            if((int)current.elem>=10){
+                current.elem=(int)current.elem%10;
+            }
+            current = current.next;
+            head3=head3.next;
+        }
+        tail1.next = head2;
+        return head1;
+    }
+
+Doubly Linked List:
+
+Patient Class:
+
+public class Patient{
+
+    public Integer id;
+    public String name;
+    public Integer age;
+    public String bloodGroup;
+    public Patient next; //this points to the next patient
+    public Patient prev; //this points to the previous patient
+
+    public Patient(Integer id,String name,Integer age,String bloodGroup,Patient next,Patient prev){
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.bloodGroup = bloodGroup;
+        this.next = next;
+        this.prev = prev;
+    }
+
+}
+
+WRM Class:
+public class WRM {
+    Patient dh;
+    public WRM() {
+        dh = new Patient(null, null, null, null, null, null);
+        dh.next = dh;
+        dh.prev = dh;
+    }
+
+    public void registerPatient(int id, String name, int age, String bloodgroup) {
+        Patient newPatient = new Patient(id, name, age, bloodgroup,null,null);
+        if(dh.next==dh){
+            dh.next = newPatient;
+            dh.prev = newPatient;
+            newPatient.next = dh;
+            newPatient.prev = dh;
+        }else{
+            Patient temp = dh.next;
+            while(temp.next != dh){
+                temp = temp.next;
+            }
+            temp.next = newPatient;
+            newPatient.prev = temp;
+            newPatient.next = dh;
+        }
+    }
+
+    public void servePatient() {
+        if(dh.next == dh)System.out.println("No patient is in waiting room to serve.\n");
+        System.out.printf("%s is served.\n",dh.next.name);
+        dh.next = dh.next.next;
+        dh.next.prev = dh;
+    }
+
+    public void showAllPatient() {
+        if(dh.next == dh)System.out.println("No patient is in waiting room.\n");
+        Patient temp = dh.next;
+        while(temp!=dh){
+            System.out.printf("%s\n",temp.name);
+            temp = temp.next;
+        }
+    }
+
+    public boolean canDoctorGoHome() {
+        if(dh.next==dh)return true;
+        else return false;
+    }
+
+    public void cancelAll() {
+        if(dh.next == dh)System.out.println("No patient is in waiting room to cancel.\n");
+        dh.next = dh;
+        System.out.println("All appointments cancelled.\n");
+    }
+
+
+    public void reverseTheLine() {
+        Patient current = dh.next;
+        Patient temp = null;
+        while (current != dh) {
+            temp = current.prev;
+            current.prev = current.next;
+            current.next = temp;
+            current = current.prev;
+        }
+        if (temp != null) {
+            dh.next = temp.prev;
+            dh.prev = current;
+        }
+    }
+
+}
+
+Tester Code:
+import java.util.Scanner;
+public class WRMTester {
+    public static void main(String[] args) {
+        WRM wrm = new WRM();
+        System.out.println("** Welcome to Waiting Room Management System **");
+        Scanner sc = new Scanner(System.in);
+        boolean flag = true;
+        while(flag){
+            System.out.print("1.registerPatient()\n2.servePatient()\n3.showAllPatient()\n4.canDoctorGoHome()\n5.cancelAll()\n6.reverseTheLine()\n7.exit\nSelect:\n");
+            int s = sc.nextInt();
+            switch(s){
+                case 1:
+                    System.out.print("Enter ID: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Enter Name: ");
+                    String name = sc.nextLine();
+                    System.out.print("Enter Age: ");
+                    int age = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Enter Blood Group: ");
+                    String bloodgroup = sc.nextLine();
+                    wrm.registerPatient(id, name, age, bloodgroup);
+                    System.out.println("Success registering patient.\n");
+                    break;
+                case 2:
+                    wrm.servePatient();
+                    break;
+                case 3:
+                    wrm.showAllPatient();
+                    break;
+                case 4:
+                    wrm.canDoctorGoHome();
+                    if(wrm.canDoctorGoHome()){
+                        System.out.println("Yes");
+                    }else{
+                        System.out.println("No.");
+                    }
+                    break;
+                case 5:
+                    wrm.cancelAll();
+                    break;
+                case 6:
+                    wrm.reverseTheLine();
+                    System.out.println("The line is reversed now.\n");
+                    break;
+                case 7:
+                    flag = false;
+                    System.out.printf("Session End! Thank you.");
+                    break;
+                default:
+                    System.out.print("Wrong command.\n");
+                    System.out.print("1.registerPatient()\n2.servePatient()\n3.showAllPatient()\n4.canDoctorGoHome()\n5.cancelAll()\n6.reverseTheLine()\n7.exit\nSelect:\n");
+            }
+        }
+    }
+}

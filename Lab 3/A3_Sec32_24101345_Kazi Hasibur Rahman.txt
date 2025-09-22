@@ -1,0 +1,217 @@
+Task 1:
+public static void walkZigzag( Integer[][] matrix ){
+        for (int i = 0; i < matrix[0].length; i++) {
+            if(matrix.length%2!=0){
+                if (i % 2 != 0) {
+                    for (int j = matrix.length - 2; j >= 0; j -= 2) {
+                        System.out.printf("%d ", matrix[j][i]);
+                    }
+                } else {
+                    for (int j = 0; j < matrix.length; j += 2) {
+                        System.out.printf("%d ", matrix[j][i]);
+                    }
+                }
+                System.out.println();
+            }else {
+                if (i % 2 != 0) {
+                    for (int j = matrix.length - 1; j >= 0; j -= 2) {
+                        System.out.printf("%d ", matrix[j][i]);
+                    }
+                } else {
+                    for (int j = 0; j < matrix.length; j += 2) {
+                        System.out.printf("%d ", matrix[j][i]);
+                    }
+                }
+                System.out.println();
+            }
+
+        }
+
+    }
+
+Task 2:
+public static Integer[] decryptMatrix( Integer[][] matrix ){
+
+
+        Integer[] array = new Integer[matrix[0].length-1];
+        Integer sum = 0;
+        Integer temp = 0;
+        int c=0;
+        for(int i = 0; i < matrix[0].length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                sum+=matrix[j][i];
+            }
+            if(i!=0){
+                temp = sum - temp;
+                array[c] = temp;
+                c++;
+                temp = sum;
+            }else{
+                temp = sum;
+
+            }
+            sum=0;
+        }
+
+
+        return array;
+
+    }
+
+Task 3:
+public static Integer rowRotation( Integer examWeek, String[][] matrix ){
+        String[][] newArr= new String[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length ; j++) {
+                newArr[i][j] = matrix[i][j];
+            }
+        }
+        int row = 0;
+        for (int i = 0; i < matrix[0].length; i++) {
+            int c=examWeek-1;
+            for (int j = 0; j < matrix.length; j++) {
+                if(c<matrix.length){
+                    newArr[c][i]=matrix[j][i] ;
+                    if(newArr[c][i].equals("AA")){
+                        row=c+1;
+                    }
+                    c++;
+                }else{
+                    newArr[c% matrix.length][i] = matrix[j][i];
+                    if(newArr[c% matrix.length][i].equals("AA")){
+                        row=c% matrix.length+1;
+                    }
+                    c++;
+                }
+
+            }
+        }
+        Arr.print2D(newArr);
+        return row;
+    }
+
+Task 4:
+public static Integer[][] compressMatrix( Integer[][] matrix ){
+        Integer[][] newMat = new Integer[matrix.length/2][matrix[0].length/2];
+        int c1 = 0,c2 = 0;
+        for (int i = 0; i < matrix.length; i+=2) {
+            for (int j = 0; j <matrix[0].length; j+=2) {
+                newMat[c1][c2] = matrix[i][j] +matrix[i+1][j] +matrix[i][j+1] +matrix[i+1][j+1];
+                c2++;
+            }
+            c1++;
+            c2=0;
+        }
+        return newMat;
+    }
+
+Task 5:
+public static void playGame( Integer[][] arena ){
+        int point=0;
+        for (int i = 0; i < arena.length; i++) {
+            for (int j = 0; j < arena[0].length; j++) {
+                if(arena[i][j]!=0 && arena[i][j] % 50==0){
+                    if(i==0 && j==0){
+                        if(arena[i+1][j]==2){
+                            point+=2;
+                        }
+                        if(arena[i][j+1]==2){
+                            point+=2;
+                        }
+                    }
+                    else if(i==arena.length-1 && j==0){
+                        if(arena[i+1][j]==2){
+                            point+=2;
+                        }
+                        if(arena[i-1][j]==2){
+                            point+=2;
+                        }
+                        if(arena[i][j+1]==2){
+                            point+=2;
+                        }
+                    }
+                    else if(j==arena[0].length-1 && i==0){
+                        if(arena[i+1][j]==2){
+                            point+=2;
+                        }
+                        if(arena[i][j-1]==2){
+                            point+=2;
+                        }
+                        if(arena[i][j+1]==2){
+                            point+=2;
+                        }
+                    }
+                    else if(i==arena.length-1 && j==arena[0].length-1){
+                        if(arena[i-1][j]==2){
+                            point+=2;
+                        }
+                        if(arena[i][j-1]==2){
+                            point+=2;
+                        }
+                    }
+                    else if(i!=0 && i!=arena.length-1 && j==0){
+                        if(arena[i-1][j]==2){
+                            point+=2;
+                        }
+                        if(arena[i][j+1]==2){
+                            point+=2;
+                        }
+                        if(arena[i+1][j]==2){
+                            point+=2;
+                        }
+                    }
+                    else if(j!=0 && j!=arena[0].length-1 && i==0){
+                        if(arena[i][j-1]==2){
+                            point+=2;
+                        }
+                        if(arena[i][j+1]==2){
+                            point+=2;
+                        }
+                        if(arena[i+1][j]==2){
+                            point+=2;
+                        }
+                    }
+                    else if(j!=0 && j==arena[0].length-1 && i!=0 && i!= arena.length-1){
+                        if(arena[i][j-1]==2){
+                            point+=2;
+                        }
+                        if(arena[i-1][j]==2){
+                            point+=2;
+                        }
+                        if(arena[i+1][j]==2){
+                            point+=2;
+                        }
+                    }
+                    else if(j!=0 && j!=arena[0].length-1 && i!=0 && i== arena.length-1){
+                        if(arena[i][j-1]==2){
+                            point+=2;
+                        }
+                        if(arena[i-1][j]==2){
+                            point+=2;
+                        }
+                        if(arena[i][j+1]==2){
+                            point+=2;
+                        }
+                    }
+                    else{
+                        if(arena[i][j-1]==2){
+                            point+=2;
+                        }
+                        if(arena[i-1][j]==2){
+                            point+=2;
+                        }
+                        if(arena[i][j+1]==2){
+                            point+=2;
+                        }
+                        if(arena[i+1][j]==2){
+                            point+=2;
+                        }
+                    }
+                }
+            }
+        }
+        System.out.printf("Points Gained: %d.",point);
+        if(point<10)System.out.print("Your team is out.");
+        else System.out.print(" Your team has survived the game.");
+
+    }

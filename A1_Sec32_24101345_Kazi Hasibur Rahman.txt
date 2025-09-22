@@ -1,0 +1,94 @@
+Task-1:
+public static Integer[] mergeSortedArray( Integer[] arr1, Integer[] arr2 ){
+        int length = arr1.length+ arr2.length;
+        Integer[] arr = new Integer[length];
+        int c=0;
+        for(int i = 0; i < arr1.length; i++) {
+            arr[c] = arr1[i];
+            c++;
+        }
+        for(int i = 0; i < arr2.length; i++) {
+            arr[c] = arr2[i];
+            c++;
+        }
+        for(int i=0;i<arr.length;i++){
+            for(int j=0;j<arr.length-i-1;j++){
+                if(arr[j]>arr[j+1]){
+                    int temp=arr[j];
+                    arr[j]=arr[j+1];
+                    arr[j+1]=temp;
+                }
+            }
+        }
+        return arr;
+    }
+
+Task-2:
+public static void mostWater( Integer[] height ){
+        int temp=0,area=0;
+        for(int i=0;i<height.length-1;i++){
+            for(int j=i+1; j<height.length;j++){
+                int barHeight = Math.min(height[i],height[j]);
+                int barWidth = j-i;
+                area = barHeight*barWidth;
+                if(temp<area){
+                    temp = area;
+                }
+            }
+        }
+        System.out.printf("%d",temp);
+    }
+
+Task-3:
+public static String checkSimilar( Node building1, Node building2 ){
+        Node node1 = building1,node2 = building2;
+        String check = null;
+        while(node1 != null && node2 != null){
+            if(node1.elem.equals(node2.elem)){
+                check = "Similar";
+            }else{
+                check =  "Not Similar";
+                return check;
+            }
+            node1 = node1.next;
+            node2 = node2.next;
+        }
+        if((node1 != null && node2 == null)||(node2 != null && node1 == null)) check = "Not Similar";
+
+        return check;
+
+    }
+
+Task-4:
+public static Boolean assembleCongaLine(Node head){
+        Node current = head;
+        while(current!=null){
+            if(current.next!=null){
+                if((int)current.elem > (int)current.next.elem){
+                    return false;
+                }
+
+            }
+            current = current.next;
+        }
+        return true;
+    }
+
+Task-5:
+public static int sumDist(Node head, Integer[] distArr) {
+        Node current = head;
+        int sum = 0;
+        for(int i=0; i<distArr.length;i++){
+            int index = 0;
+            while(current != null) {
+                if(distArr[i] == index){
+                    sum+= (int)current.elem;
+                    current = current.next;
+                    break;
+                }
+                index++;
+                current = current.next;
+            }
+        }
+        return sum;
+    }
